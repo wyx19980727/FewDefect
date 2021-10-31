@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
 from mmcv.cnn import ConvModule
-
+import torch
 from mmdet.models.builder import HEADS
 from mmdet.models.utils import build_linear_layer
 from .bbox_head import BBoxHead
@@ -18,7 +18,7 @@ class ConvFCBBoxHead(BBoxHead):
         shared convs -> shared fcs
                                     \-> reg convs -> reg fcs -> reg
     """  # noqa: W605
-
+        
     def __init__(self,
                  num_shared_convs=0,
                  num_shared_fcs=0,
@@ -163,6 +163,7 @@ class ConvFCBBoxHead(BBoxHead):
 
             for fc in self.shared_fcs:
                 x = self.relu(fc(x))
+        
         # separate branches
         x_cls = x
         x_reg = x
@@ -220,3 +221,55 @@ class Shared4Conv1FCBBoxHead(ConvFCBBoxHead):
             fc_out_channels=fc_out_channels,
             *args,
             **kwargs)
+
+
+@HEADS.register_module()
+class Shared2FCCosineSimHead(ConvFCBBoxHead):
+
+    def __init__(self, scale = 20,fc_out_channels=1024, *args, **kwargs):
+        super(Shared2FCCosineSimHead, self).__init__(
+            num_shared_convs=0,
+            num_shared_fcs=2,
+            num_cls_convs=0,
+            num_cls_fcs=0,
+            num_reg_convs=0,
+            num_reg_fcs=0,
+            fc_out_channels=fc_out_channels,
+            *args,
+            **kwargs)
+        self.scale = scale
+
+    def forward(self, x):
+    
+        # shared part
+        if self.num_shared_convs > 0:
+            for conv in self.shared_convs:
+                x = conv(x)
+
+        if self.num_shared_fcs > 0:
+            if self.with_avg_pool:
+                x = self.avg_pool(x)
+
+            x = x.flatten(1)
+
+            for fc in self.shared_fcs:
+                x = self.relu(fc(x))
+
+        # if x.dim() > 2:
+        #     x = torch.flatten(x, start_dim=1)
+        
+        # normalize the input x along the `input_size` dimension
+        x_norm = torch.norm(x, p=2, dim=1).unsqueeze(1).expand_as(x)
+
+        x_normalized = x.div(x_norm + 1e-5)
+
+        # normalize weight
+        temp_norm = torch.norm(self.fc_cls.weight.data,
+                            p=2, dim=1).unsqueeze(1).expand_as(self.fc_cls.weight.data)
+
+        self.fc_cls.weight.data = self.fc_cls.weight.data.div(temp_norm + 1e-5)
+
+        cos_dist = self.fc_cls(x_normalized)
+        scores = self.scale * cos_dist
+        proposal_deltas = self.fc_reg(x)
+        return scores, proposal_deltas

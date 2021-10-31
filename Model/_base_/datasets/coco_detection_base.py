@@ -50,4 +50,4 @@ data = dict(
         ann_file=data_root + 'COCO_Annotation/test.json',
         img_prefix=data_root + 'JPEGImages/',
         pipeline=test_pipeline))
-evaluation = dict(interval=1, metric='bbox')
+evaluation = dict(interval=1, metric='bbox',save_best='bbox_mAP')

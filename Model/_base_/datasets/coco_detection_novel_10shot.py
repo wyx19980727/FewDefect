@@ -1,6 +1,7 @@
 # dataset settings
 dataset_type = 'CocoDataset'
 data_root = './Datasets/NEU_DET/'
+classes = ("pitted_surface","rolled-in_scale","scratches")
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
@@ -33,17 +34,20 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'COCO_Annotation/train.json',
+        classes = classes,
+        ann_file=data_root + 'COCO_Annotation/base_novel/seed1/10shot_novel_seed1.json',
         img_prefix=data_root + 'JPEGImages/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'COCO_Annotation/val.json',
+        classes = classes,
+        ann_file=data_root + 'COCO_Annotation/base_novel/seed1/novel_validate_seed1.json',
         img_prefix=data_root + 'JPEGImages/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'COCO_Annotation/test.json',
+        classes = classes,
+        ann_file=data_root + 'COCO_Annotation/base_novel/seed1/10shot_novel_seed1.json',
         img_prefix=data_root + 'JPEGImages/',
         pipeline=test_pipeline))
-evaluation = dict(interval=1, metric='bbox')
+evaluation = dict(interval=1, metric='bbox',save_best='bbox_mAP')

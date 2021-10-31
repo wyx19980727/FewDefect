@@ -20,9 +20,9 @@ class CosineSimHead(BBoxHead):
     ):
     
         """
-                     /-> cosine simmilarity based cls -> cls
-        roi features
-                     \-> reg fcs -> reg
+                                                   /-> cosine simmilarity based cls -> cls
+        roi features -> shared convs -> shared fcs
+                                                   \-> reg fcs -> reg
 
         """
         super(CosineSimHead, self).__init__(*args, init_cfg=init_cfg, **kwargs)
@@ -31,14 +31,17 @@ class CosineSimHead(BBoxHead):
         
         ### define model
         if self.with_cls:
+            
             if self.custom_cls_channels:
                 cls_channels = self.loss_cls.get_cls_channels(self.num_classes)
             else:
                 cls_channels = self.num_classes + 1
+            
             self.fc_cls = build_linear_layer(
                 self.cls_predictor_cfg,
                 in_features=self.input_size,
                 out_features=cls_channels)
+
         if self.with_reg:
             out_dim_reg = (4 if self.reg_class_agnostic else 4 *
                            self.num_classes)
@@ -46,6 +49,7 @@ class CosineSimHead(BBoxHead):
                 self.reg_predictor_cfg,
                 in_features=self.input_size,
                 out_features=out_dim_reg)
+
         self.scale = 20
 
     def forward(self, x):
@@ -55,11 +59,13 @@ class CosineSimHead(BBoxHead):
 
         # normalize the input x along the `input_size` dimension
         x_norm = torch.norm(x, p=2, dim=1).unsqueeze(1).expand_as(x)
+
         x_normalized = x.div(x_norm + 1e-5)
 
         # normalize weight
         temp_norm = torch.norm(self.fc_cls.weight.data,
                             p=2, dim=1).unsqueeze(1).expand_as(self.fc_cls.weight.data)
+
         self.fc_cls.weight.data = self.fc_cls.weight.data.div(temp_norm + 1e-5)
 
         cos_dist = self.fc_cls(x_normalized)

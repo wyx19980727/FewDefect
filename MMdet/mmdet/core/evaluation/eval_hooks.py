@@ -13,7 +13,6 @@ class EvalHook(BaseEvalHook):
         """perform evaluation and save ckpt."""
         if not self._should_evaluate(runner):
             return
-
         from mmdet.apis import single_gpu_test
         results = single_gpu_test(runner.model, self.dataloader, show=False)
         runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
@@ -56,6 +55,6 @@ class DistEvalHook(BaseDistEvalHook):
             print('\n')
             runner.log_buffer.output['eval_iter_num'] = len(self.dataloader)
             key_score = self.evaluate(runner, results)
-
+            print(key_score)
             if self.save_best:
                 self._save_ckpt(runner, key_score)
