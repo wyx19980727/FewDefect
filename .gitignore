@@ -1,4 +1,5 @@
 *.jpg
 *.egg
 *.pth
+*.pyc
 !.gitignore
