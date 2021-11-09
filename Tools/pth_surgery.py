@@ -135,9 +135,9 @@ def surgery_loop(args, surgery):
     # 删除权重
     if args.method == 'remove':
         for param_name in args.param_name:
-            del ckpt['model'][param_name + '.weight']
-            if param_name+'.bias' in ckpt['model']:
-                del ckpt['model'][param_name+'.bias']
+            del ckpt['state_dict'][param_name + '.weight']
+            if param_name+'.bias' in ckpt['state_dict']:
+                del ckpt['state_dict'][param_name+'.bias']
         save_ckpt(ckpt, save_path)
         return
 
@@ -156,11 +156,9 @@ def surgery_loop(args, surgery):
     # Save to file
     save_ckpt(ckpt, save_path)
 
-
 def save_ckpt(ckpt, save_name):
     torch.save(ckpt, save_name)
     print('save changed ckpt to {}'.format(save_name))
-
 
 def reset_ckpt(ckpt):
     if 'meta' in ckpt:

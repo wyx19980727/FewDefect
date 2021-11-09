@@ -227,5 +227,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = '/home/dlsuncheng/Work_dir/Steel_Defect/20211021/FRCN_cos-ft/'
+work_dir = '/home/dlsuncheng/Work_dir/Steel_Defect/20211101/fc_base_pretrain/'
 gpu_ids = range(0, 2)

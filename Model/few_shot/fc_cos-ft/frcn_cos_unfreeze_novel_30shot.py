@@ -28,5 +28,5 @@ log_config = dict(
     ])
 
 runner = dict(type='EpochBasedRunner', max_epochs=24)
-work_dir = "/home/dlsuncheng/Work_dir/FsMMdet/20211031/FRCN_fc_cos-ft/novel_unfreeze_30shot"
-load_from = "/home/dlsuncheng/FSOD/FsMMdet/Weights/weights_removed.pth"
+work_dir = "/home/dlsuncheng/Work_dir/FsMMdet/20211101/FRCN_fc_cos-ft/novel_unfreeze_30shot"
+load_from = "/home/dlsuncheng/FSOD/FsMMdet/Weights/model_reset_remove.pth"
