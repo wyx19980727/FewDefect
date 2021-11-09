@@ -2,4 +2,6 @@
 *.egg
 *.pth
 *.pyc
+__pycache__/
+
 !.gitignore
