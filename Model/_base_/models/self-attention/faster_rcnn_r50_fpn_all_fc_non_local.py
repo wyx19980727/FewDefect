@@ -10,7 +10,13 @@ model = dict(
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
         style='pytorch',
-        # init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50'),
+        plugins=[
+            dict(
+                cfg=dict(type='ContextBlock', ratio=0.0625),
+                stages=(False, True, True, True),
+                position='after_conv3')
+        ]
         ),
     neck=dict(
         type='FPN',
@@ -41,10 +47,11 @@ model = dict(
             out_channels=256,
             featmap_strides=[4, 8, 16, 32]),
         bbox_head=dict(
-            type='CosineSimHead',
+            type='Shared2FCBBoxHead',
             in_channels=256,
+            fc_out_channels=1024,
             roi_feat_size=7,
-            num_classes=3,
+            num_classes=6,
             bbox_coder=dict(
                 type='DeltaXYWHBBoxCoder',
                 target_means=[0.0, 0.0, 0.0, 0.0],
