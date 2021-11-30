@@ -6,10 +6,10 @@ from mmdet.models import build_detector
 import torch.nn as nn
 import mmcv
 from torchviz import make_dot
-# from tensorboardX import SummaryWriter
-# writer = SummaryWriter('log')
+from tensorboardX import SummaryWriter
+writer = SummaryWriter('log')
 
-config = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/few_shot/fc_cos-ft/frcn_cos_unfreeze_novel_30shot.py"
+config = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/full_data/frcn_all.py"
 
 class ConvNet(nn.Module):
     def __init__(self):
@@ -27,11 +27,11 @@ input = input.to(device)
 input.to(device)
 MyConvNet = ConvNet()
 MyConvNet.model.to(device)
-y_rpn,y = MyConvNet(input)
+y = MyConvNet(input)
 
-dot = make_dot(y, params=dict(MyConvNet.model.named_parameters()))
-dot.format = 'png'
-dot.render('FRCNN')
+# dot = make_dot(y, params=dict(MyConvNet.model.named_parameters()))
+# dot.format = 'png'
+# dot.render('FRCNN')
 
-# writer.add_graph(MyConvNet, (input,))
-# writer.close()
+writer.add_graph(MyConvNet, (input,))
+writer.close()
