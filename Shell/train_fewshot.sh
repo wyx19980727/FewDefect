@@ -1,14 +1,18 @@
 #############################################
 ############  train & fine-tune #############
 #############################################
-
+time=20211130
+work_folder=/home/dlsuncheng/Work_dir/FsMMdet/${time}
 ### base class train
-
+python ./MMdet/tools/train.py \
+    /home/dlsuncheng/Projects/FSOD/FsMMdet/Model/base_pretrain/frcn_fc_base_pretrain.py \
+    --work-dir ${work_folder}"/base_train_epochrunner" \
+    --gpu-ids 2
 ### base class test
-python ./MMdet/tools/test.py \
-    /home/dlsuncheng/Work_dir/FsMMdet/20211101/20211101/fc_base_pretrain/frcn_fc_base_pretrain.py \
-    /home/dlsuncheng/Work_dir/FsMMdet/20211101/20211101/fc_base_pretrain/epoch_24.pth \
-    --eval bbox \
+# python ./MMdet/tools/test.py \
+#     /home/dlsuncheng/Work_dir/FsMMdet/20211101/20211101/fc_base_pretrain/frcn_fc_base_pretrain.py \
+#     /home/dlsuncheng/Work_dir/FsMMdet/20211101/20211101/fc_base_pretrain/epoch_24.pth \
+#     --eval bbox \
 
 ### novel class few shot fine-tune
 # time=$(date "+%Y%m%d")
