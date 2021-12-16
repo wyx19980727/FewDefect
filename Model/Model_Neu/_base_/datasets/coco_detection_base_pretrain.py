@@ -1,5 +1,5 @@
 # dataset settings
-dataset_type = 'CocoDataset'
+dataset_type = 'NEUDataset'
 data_root = './Datasets/NEU_DET/'
 classes = ("crazing","inclusion","patches")
 img_norm_cfg = dict(

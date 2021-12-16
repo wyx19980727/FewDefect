@@ -1,5 +1,5 @@
 # dataset settings
-dataset_type = 'CocoDataset'
+dataset_type = 'NEUDataset'
 data_root = './Datasets/NEU_DET/'
 classes = ("pitted_surface","rolled-in_scale","scratches")
 img_norm_cfg = dict(

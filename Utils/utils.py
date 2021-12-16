@@ -8,7 +8,7 @@ import time
 timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
 
 base_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_base-training.py"
-novel_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_10shot-fine-tuning.py"
+novel_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_10shot-fine-tuning.py"
 
 # base_config = Config.fromfile(base_config_path)
 novel_config = Config.fromfile(novel_config_path)
@@ -30,6 +30,8 @@ from mmcv import Config, DictAction
 base_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_base-training.py"
 novel_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_10shot-fine-tuning.py"
 ld_config = "/home/dlsuncheng/Packages/MMdet/configs/ld/ld_r18_gflv1_r101_fpn_coco_1x.py"
+frcn_config = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/Model_Neu/full_data/frcn_all.py"
+aa_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_10shot-fine-tuning_less.py"
 # base_config = Config.fromfile(base_config_path)
 # novel_config = Config.fromfile(novel_config_path)
 def print_cfg(cfg_path):
@@ -40,7 +42,7 @@ def print_cfg(cfg_path):
     #     from mmcv.utils import import_modules_from_strings
     #     import_modules_from_strings(**cfg['custom_imports'])
     print(f'Config:\n{cfg.pretty_text}')
-print_cfg(ld_config)
+print_cfg(aa_path)
 # %%
 ### check checkpoint
 import torch

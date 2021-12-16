@@ -4,11 +4,12 @@
 
 # # baseline 
 ##########  coco  ##########
-python ./MMdet/tools/test.py \
-    /home/dlsuncheng/Projects/FSOD/FsMMdet/Model/full_data/frcn_all.py \
-    /home/dlsuncheng/Work_dir/Steel_Defect/20211021/FRCN_all/epoch_23.pth \
+python ./third_party/mmdetection/tools/test.py \
+    ./Model/Model_Neu/base_pretrain/frcn_fc_base_pretrain.py \
+    /home/user/sun_chen/Projects/FSOD/FsMMdet/Weights/base_best_bbox_mAP.pth \
     --eval bbox \
     --options "iou_thrs=[0.5]"
+    
 ##########  voc  ##########
 # python ./MMdet/tools/test.py \
 #     /home/dlsuncheng/Projects/FSOD/FsMMdet/Model/full_data/frcn_all_voc.py \
@@ -22,8 +23,6 @@ python ./MMdet/tools/test.py \
 #     /home/dlsuncheng/Work_dir/Steel_Defect/20211021/FRCN_all/epoch_23.pth \
 #     --eval bbox \
 #     --eval-options "iou_thrs=[0.5]" 
-
-
 
 # # zero-dce 
 # python ./MMdet/tools/test.py \
