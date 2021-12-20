@@ -32,6 +32,7 @@ novel_config_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model_Fewshot/tfa/ne
 ld_config = "/home/dlsuncheng/Packages/MMdet/configs/ld/ld_r18_gflv1_r101_fpn_coco_1x.py"
 frcn_config = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/Model_Neu/full_data/frcn_all.py"
 aa_path = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Model/Model_Fewshot/tfa/neu_det/tfa_r101_fpn_coco_10shot-fine-tuning_less.py"
+attention_fpn = "/home/user/sun_chen/Work_dir/AttentionFPN/20211218/attention-fpn/tfa_101_fpn_coco_base_attention-fpn.py"
 # base_config = Config.fromfile(base_config_path)
 # novel_config = Config.fromfile(novel_config_path)
 def print_cfg(cfg_path):
@@ -42,7 +43,10 @@ def print_cfg(cfg_path):
     #     from mmcv.utils import import_modules_from_strings
     #     import_modules_from_strings(**cfg['custom_imports'])
     print(f'Config:\n{cfg.pretty_text}')
-print_cfg(aa_path)
+cfg = Config.fromfile(attention_fpn)
+print(type(cfg.model.neck.self_attention["layer"]))
+
+# print_cfg(attention_fpn)
 # %%
 ### check checkpoint
 import torch
@@ -97,4 +101,18 @@ draw.save("a.png")
 ### model inference
 student_module = "neck.fpn_convs.3.conv"
 new_nodule = 'student_' + student_module.replace('.','_')
+# %%
+from mmcv.cnn.bricks.non_local import NonLocal2d
+from mmcv.cnn.bricks.context_block import ContextBlock
+from mmcv.cnn.bricks.generalized_attention import GeneralizedAttention
+a = "NonLocal2d"
+print(eval(a)(in_channels=10))
+# %%
+test = [3,4,5,6]
+try_list = [7,8,9,10,11,12]
+for i,num in enumerate(test):
+    print(num)
+    print()
+    try_list[len(try_list)-i-1] = num*try_list[len(test)-i-1]
+    print(try_list)
 # %%

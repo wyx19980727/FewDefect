@@ -32,7 +32,7 @@ test_pipeline = [
         ])
 ]
 # classes splits are predefined in FewShotCocoDataset
-data_root = "/home/dlsuncheng/Projects/FSOD/FsMMdet/Datasets/NEU_DET/"
+data_root = "./Datasets/NEU_DET/"
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
